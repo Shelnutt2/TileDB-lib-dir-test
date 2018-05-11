@@ -1,0 +1,16 @@
+FROM gentoo/stage3-amd64
+
+
+RUN emerge --sync -q && emerge -v cmake
+
+ADD TileDB /opt/TileDB
+
+WORKDIR /opt/TileDB
+
+RUN mkdir build \
+ && cd build \
+ && cmake .. -DCMAKE_BUILD_TYPE=Release \
+ && make -j4 \
+ && make examples \
+ && make check \
+ && make -C tiledb install

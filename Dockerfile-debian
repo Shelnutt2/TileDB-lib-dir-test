@@ -1,0 +1,14 @@
+FROM debian
+
+RUN apt-get update && apt-get install -y findutils file cmake gcc g++ make
+
+ADD TileDB /opt/TileDB
+
+WORKDIR /opt/TileDB
+RUN mkdir build \
+ && cd build \
+ && cmake .. -DCMAKE_BUILD_TYPE=Release \
+ && make -j4 \
+ && make examples \
+ && make check \
+ && make -C tiledb install
